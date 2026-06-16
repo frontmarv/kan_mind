@@ -1,0 +1,87 @@
+# Virtual Environment
+.venv/
+venv/
+env/
+ENV/
+.env
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+pip-wheel-metadata/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Django
+*.log
+local_settings.py
+db.sqlite3
+db.sqlite3-journal
+/media
+/staticfiles
+/static
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+*.sublime-workspace
+*.sublime-project
+
+# OS
+Thumbs.db
+.AppleDouble
+.LSOverride
+*.sublime-workspace
+
+# Testing
+.coverage
+.pytest_cache/
+htmlcov/
+.tox/
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# Migrations (optional - uncomment if you want to exclude migrations)
+# */migrations/0*.py
+# */migrations/__pycache__/
+
+# Node (if using npm for frontend)
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# Package files
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Misc
+.cache/
+.venv.bak/
+.mypy_cache/
+.dmypy.json
+dmypy.json

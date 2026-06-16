@@ -1,0 +1,30 @@
+####### Users #########
+
+- fullname
+- email
+
+
+####### Board #########
+"title"
+"member_count"
+"ticket_count"
+"tasks_to_do_count",
+"tasks_high_prio_count"
+"owner_id"
+"members": []
+
+####### Task #########
+
+"title"
+"description" 
+"status" 
+"priority" 
+"assignee" []
+"reviewer": []
+"due_date"
+"comments_count"
+
+####### Comments #########
+    "created_at": timestamp("2025-02-20T15:00:00Z")
+    "author"
+    "content"
