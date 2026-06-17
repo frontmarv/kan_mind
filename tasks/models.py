@@ -4,12 +4,31 @@ from boards.models import Board  # Wir importieren das Board Model
 
 
 class Task(models.Model):
+    class Status(models.TextChoices):
+        TODO = 'to-do'
+        IN_PROGRESS = 'in-progress'
+        REVIEW = 'review'
+        DONE = 'done'
+
+    class Priority(models.TextChoices):
+        LOW = 'low'
+        MEDIUM = 'medium'
+        HIGH = 'high'
+
     board = models.ForeignKey(
-        Board, on_delete=models.CASCADE, related_name='tasks')
+        Board, on_delete=models.CASCADE, related_name='ticket')
     title = models.CharField(max_length=255)
     description = models.TextField(blank=True, null=True)
-    status = models.CharField(max_length=20)
-    priority = models.CharField(max_length=20)
+    status = models.CharField(
+        max_length=20,
+        choices=Status.choices,
+        default=Status.TODO
+    )
+    priority = models.CharField(
+        max_length=20,
+        choices=Priority.choices,
+        default=Priority.MEDIUM
+    )
     due_date = models.DateField(blank=True, null=True)
     assignees = models.ManyToManyField(
         settings.AUTH_USER_MODEL, related_name='assigned_tasks', blank=True)

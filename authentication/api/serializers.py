@@ -1,11 +1,37 @@
 from rest_framework import serializers
+from django.contrib.auth import authenticate
 from ..models import CustomUser
 
 
 class UserProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUser
-        fields = ['email', 'fullname']
+        fields = ['id', 'email', 'fullname']
+
+
+class AuthTokenSerializer(serializers.Serializer):
+    """Serializer für Email-basierte Authentifizierung"""
+    email = serializers.EmailField()
+    password = serializers.CharField(
+        style={'input_type': 'password'}, trim_whitespace=False)
+
+    def validate(self, data):
+        email = data.get('email')
+        password = data.get('password')
+
+        if email and password:
+            user = authenticate(request=self.context.get('request'),
+                                username=email, password=password)
+        else:
+            msg = 'Email und Password sind erforderlich.'
+            raise serializers.ValidationError(msg, code='authorization')
+
+        if not user:
+            msg = 'E-Mail oder Passwort ist ungültig.'
+            raise serializers.ValidationError(msg, code='authorization')
+
+        data['user'] = user
+        return data
 
 
 class RegistrationSerializer(serializers.ModelSerializer):
