@@ -134,7 +134,6 @@ The project includes REST API endpoints for:
     /api/tasks/assigend-to-me/,
     /api/tasks/reviewing/
 
-For detailed API documentation, refer to the individual app's `api/` directories.
 
 ## Troubleshooting
 

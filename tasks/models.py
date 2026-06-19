@@ -29,10 +29,10 @@ class Task(models.Model):
         choices=Priority.choices,
         default=Priority.MEDIUM
     )
-    assignee = models.ManyToManyField(
-        settings.AUTH_USER_MODEL, related_name='assigned_tasks', blank=True)
+    assignee = models.ForeignKey(
+        settings.AUTH_USER_MODEL, related_name='assigned_user', blank=True, null=True, on_delete=models.SET_NULL)
     reviewer = models.ForeignKey(
-        settings.AUTH_USER_MODEL, related_name='reviewing_tasks', blank=True, null=True, on_delete=models.SET_NULL,)
+        settings.AUTH_USER_MODEL, related_name='assigned_revier', blank=True, null=True, on_delete=models.SET_NULL)
     due_date = models.DateField(blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
