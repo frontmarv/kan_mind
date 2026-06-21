@@ -6,7 +6,7 @@ from rest_framework import status
 from ..models import Task
 from api.mixins import UserAuthenticationMixin
 from rest_framework.views import APIView
-
+from .permissions import IsMemberOfBoard
 from rest_framework.decorators import api_view
 from django.shortcuts import get_object_or_404
 from rest_framework.decorators import api_view, permission_classes
@@ -34,10 +34,9 @@ class TaskView(APIView):
     permission_classes = [IsAuthenticated]
 
     def post(self, request):
+        permission_classes = [IsMemberOfBoard]
         serializer = TaskSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-    # Extra Information: Sowohl `assignee` als auch `reviewer` müssen Mitglieder des Boards sein. Falls kein `assignee` oder `reviewer` angegeben wird, bleibt das Feld leer.
