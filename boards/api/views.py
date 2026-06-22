@@ -8,7 +8,6 @@ from api.mixins import UserAuthenticationMixin
 from rest_framework.views import APIView
 from rest_framework.decorators import api_view
 from django.shortcuts import get_object_or_404
-from rest_framework.decorators import api_view, permission_classes
 
 
 class BoardListView(UserAuthenticationMixin, APIView):

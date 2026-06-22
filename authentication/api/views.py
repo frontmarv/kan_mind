@@ -12,11 +12,21 @@ class EmailCheckView(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
-        current_user = request.user
-        serializer = UserProfileSerializer(current_user)
-        if serializer.data['email'] == "":
-            return Response(status=status.HTTP_400_BAD_REQUEST)
-        return Response(serializer.data)
+        email = request.query_params.get('email')
+        if not email:
+            return Response(
+                {"error": "Ungültige Anfrage. Die E-Mail-Adresse fehlt oder hat ein falsches Format."},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        try:
+            user = CustomUser.objects.get(email=email)
+        except CustomUser.DoesNotExist:
+            return Response(
+                {"error": "Email nicht gefunden. Die Email exestiert nicht."},
+                status=status.HTTP_404_NOT_FOUND
+            )
+        serializer = UserProfileSerializer(user)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 class AuthBaseView(APIView):

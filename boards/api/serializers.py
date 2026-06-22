@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
 from ..models import Board
-from tasks.api.serializers import TaskSerializer
+from tasks.api.serializers import TaskViewSerializer
 from authentication.api.serializers import UserProfileSerializer
 User = get_user_model()
 
@@ -68,7 +68,7 @@ class BoardSingleViewSerializer(serializers.ModelSerializer):
     read_only_fields = ['id', 'tasks', 'members', 'owner_id']
 
     def get_tasks(self, obj):
-        return TaskSerializer(obj.ticket.all(), many=True).data
+        return TaskViewSerializer(obj.ticket.all(), many=True).data
 
 
 class BoardUpdateSerializer(serializers.ModelSerializer):

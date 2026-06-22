@@ -32,7 +32,7 @@ class Task(models.Model):
     assignee = models.ForeignKey(
         settings.AUTH_USER_MODEL, related_name='assigned_user', blank=True, null=True, on_delete=models.SET_NULL)
     reviewer = models.ForeignKey(
-        settings.AUTH_USER_MODEL, related_name='assigned_revier', blank=True, null=True, on_delete=models.SET_NULL)
+        settings.AUTH_USER_MODEL, related_name='assigned_reviewer', blank=True, null=True, on_delete=models.SET_NULL)
     due_date = models.DateField(blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
