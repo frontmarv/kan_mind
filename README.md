@@ -156,3 +156,26 @@ del db.sqlite3  # Remove the database file
 python manage.py migrate
 python manage.py createsuperuser
 ```
+
+### Cross-Origin Resource Sharing
+Your request may get blocked. We already installed django-cors-headers 
+in the requirements.txt. 
+Add this to your seettings.py:
+
+Python
+INSTALLED_APPS = [
+    ...,
+    "corsheaders",
+    ...,
+]
+
+MIDDLEWARE = [
+    "corsheaders.middleware.CorsMiddleware",  # has to be at the top
+    ...,
+]
+
+# For testing with a local frontend:
+CORS_ALLOWED_ORIGINS = [
+    "http://127.0.0.1:5500",
+    "http://localhost:5500",
+]

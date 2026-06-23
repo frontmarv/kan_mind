@@ -6,20 +6,37 @@ from rest_framework.exceptions import PermissionDenied
 from authentication.api.serializers import UserProfileSerializer
 
 
-class TaskViewSerializer(serializers.ModelSerializer):
+class TaskSerializer(serializers.ModelSerializer):
     comments_count = serializers.SerializerMethodField()
-    assignee_id = serializers.IntegerField(
-        write_only=True, required=False, allow_null=True)
-    reviewer_id = serializers.IntegerField(
-        write_only=True, required=False, allow_null=True)
+
+    # 1. Für die AUSGABE (Gibt das komplette Objekt zurück)
+    assignee = UserProfileSerializer(read_only=True)
+    reviewer = UserProfileSerializer(read_only=True)
+
+    # 2. Für das EINGEBEN/SPEICHERN (Nimmt weiterhin die ID entgegen)
+    assignee_id = serializers.PrimaryKeyRelatedField(
+        queryset=CustomUser.objects.all(),
+        source='assignee',
+        write_only=True,
+        required=False,
+        allow_null=True
+    )
+    reviewer_id = serializers.PrimaryKeyRelatedField(
+        queryset=CustomUser.objects.all(),
+        source='reviewer',
+        write_only=True,
+        required=False,
+        allow_null=True
+    )
 
     class Meta:
         model = Task
         fields = [
             'id', 'board', 'title', 'description', 'status',
-            'priority', 'assignee', 'reviewer', 'due_date', 'comments_count', 'assignee_id', 'reviewer_id'
+            'priority', 'assignee', 'reviewer', 'due_date',
+            'comments_count', 'assignee_id', 'reviewer_id'
         ]
-        read_only_fields = ['id', 'board']
+        read_only_fields = ['id']
 
     def get_comments_count(self, obj):
         return obj.comments.count()

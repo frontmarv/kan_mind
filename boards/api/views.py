@@ -1,13 +1,13 @@
 from rest_framework.views import APIView
-from .serializers import BoardListSerializer, BoardSingleViewSerializer, BoardUpdateSerializer
+from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework import status
+from django.shortcuts import get_object_or_404
+from .serializers import BoardListSerializer, BoardSingleViewSerializer, BoardUpdateSerializer
 from ..models import Board
 from api.mixins import UserAuthenticationMixin
-from rest_framework.views import APIView
-from rest_framework.decorators import api_view
-from django.shortcuts import get_object_or_404
+from api.permissions import IsBoardOwnerOrMember, IsBoardOwner
 
 
 class BoardListView(UserAuthenticationMixin, APIView):
@@ -33,18 +33,20 @@ class BoardListView(UserAuthenticationMixin, APIView):
 
 
 @api_view(['GET', 'PATCH', 'DELETE'])
+@permission_classes([IsAuthenticated])
 def board_single_view(request, pk):
-    if not request.user.is_authenticated:
-        return Response(status=401)
     board = get_object_or_404(Board, pk=pk)
+    is_owner = request.user == board.owner
+    is_member = request.user in board.members.all()
+
     if request.method == 'GET':
-        if request.user == board.owner or request.user in board.members.all():
+        if is_owner or is_member:
             serializer = BoardSingleViewSerializer(board)
             return Response(serializer.data)
-        else:
-            return Response(status=status.HTTP_403_FORBIDDEN)
+        return Response(status=status.HTTP_403_FORBIDDEN)
+
     if request.method == 'PATCH':
-        if request.user == board.owner or request.user in board.members.all():
+        if is_owner or is_member:
             serializer = BoardUpdateSerializer(
                 board, data=request.data, partial=True)
             if serializer.is_valid():
@@ -54,10 +56,9 @@ def board_single_view(request, pk):
         return Response(status=status.HTTP_403_FORBIDDEN)
 
     if request.method == 'DELETE':
-        if request.user == board.owner:
+        if is_owner:
             serializer = BoardSingleViewSerializer(board)
             data = serializer.data
             board.delete()
             return Response(data, status=status.HTTP_204_NO_CONTENT)
-        else:
-            return Response(status=status.HTTP_403_FORBIDDEN)
+        return Response(status=status.HTTP_403_FORBIDDEN)
