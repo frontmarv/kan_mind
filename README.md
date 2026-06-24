@@ -160,9 +160,8 @@ python manage.py createsuperuser
 ### Cross-Origin Resource Sharing
 Your request may get blocked. We already installed django-cors-headers 
 in the requirements.txt. 
-Add this to your seettings.py:
+Add this to your settings.py:
 
-Python
 INSTALLED_APPS = [
     ...,
     "corsheaders",
@@ -174,7 +173,9 @@ MIDDLEWARE = [
     ...,
 ]
 
-# For testing with a local frontend:
+### For testing with a local frontend:
+Add in settings.py:
+
 CORS_ALLOWED_ORIGINS = [
     "http://127.0.0.1:5500",
     "http://localhost:5500",
