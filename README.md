@@ -105,10 +105,10 @@ python manage.py runserver 0.0.0.0:8000
 
 ```
 kan_mind/
-├── authentication/        # User authentication and custom user model
-├── boards/               # Board management and collaboration
-├── tasks/                # Task, comment, and review management
-├── kan_mind/             # Main project settings
+├── authentication_app/        # User authentication and custom user model
+├── board_app/               # Board management and collaboration
+├── task_app/                # Task, comment, and review management
+├── core/             # Main project settings
 ├── manage.py             # Django management script
 └── requirements.txt      # Python dependencies
 ```

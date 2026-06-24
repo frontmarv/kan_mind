@@ -1,19 +1,15 @@
 from rest_framework import serializers
 from ..models import Task, Comment
-from authentication.api.serializers import UserProfileSerializer
-from authentication.models import CustomUser
+from authentication_app.api.serializers import UserProfileSerializer
+from authentication_app.models import CustomUser
 from rest_framework.exceptions import PermissionDenied
-from authentication.api.serializers import UserProfileSerializer
+from authentication_app.api.serializers import UserProfileSerializer
 
 
 class TaskSerializer(serializers.ModelSerializer):
     comments_count = serializers.SerializerMethodField()
-
-    # 1. Für die AUSGABE (Gibt das komplette Objekt zurück)
     assignee = UserProfileSerializer(read_only=True)
     reviewer = UserProfileSerializer(read_only=True)
-
-    # 2. Für das EINGEBEN/SPEICHERN (Nimmt weiterhin die ID entgegen)
     assignee_id = serializers.PrimaryKeyRelatedField(
         queryset=CustomUser.objects.all(),
         source='assignee',
@@ -72,7 +68,6 @@ class TaskChangeSerializer(serializers.ModelSerializer):
         assignee_id = attrs.pop('assignee_id', None)
         reviewer_id = attrs.pop('reviewer_id', None)
 
-        # Assignee validieren
         if assignee_id is not None:
             try:
                 assignee = CustomUser.objects.get(id=assignee_id)
@@ -85,7 +80,6 @@ class TaskChangeSerializer(serializers.ModelSerializer):
         elif assignee_id is None and 'assignee' not in attrs and not self.instance:
             attrs['assignee'] = None
 
-        # Reviewer validieren
         if reviewer_id is not None:
             try:
                 reviewer = CustomUser.objects.get(id=reviewer_id)

@@ -6,11 +6,9 @@ from rest_framework import status
 from django.shortcuts import get_object_or_404
 from .serializers import BoardListSerializer, BoardSingleViewSerializer, BoardUpdateSerializer
 from ..models import Board
-from api.mixins import UserAuthenticationMixin
-from api.permissions import IsBoardOwnerOrMember, IsBoardOwner
 
 
-class BoardListView(UserAuthenticationMixin, APIView):
+class BoardListView(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request):

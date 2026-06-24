@@ -6,11 +6,10 @@ from rest_framework import status
 from django.shortcuts import get_object_or_404
 from .serializers import TaskChangeSerializer, CommentSerializer, TaskSerializer
 from ..models import Task, Comment
-from api.mixins import UserAuthenticationMixin
-from boards.models import Board
+from board_app.models import Board
 
 
-class TaskFilterView(UserAuthenticationMixin, APIView):
+class TaskFilterView(APIView):
     permission_classes = [IsAuthenticated]
     filter_field = None
 

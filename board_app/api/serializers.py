@@ -1,8 +1,8 @@
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
 from ..models import Board
-from tasks.api.serializers import TaskSerializer
-from authentication.api.serializers import UserProfileSerializer
+from task_app.api.serializers import TaskSerializer
+from authentication_app.api.serializers import UserProfileSerializer
 User = get_user_model()
 
 

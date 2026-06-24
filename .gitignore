@@ -67,8 +67,9 @@ htmlcov/
 .env.*.local
 
 # Migrations (optional - uncomment if you want to exclude migrations)
-# */migrations/0*.py
-# */migrations/__pycache__/
+*/migrations/0*.py
+*/migrations/__pycache__/
+**/migrations/
 
 # Node (if using npm for frontend)
 node_modules/
