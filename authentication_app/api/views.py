@@ -24,9 +24,19 @@ class EmailCheckView(APIView):
 
 
 class AuthBaseView(APIView):
+    """
+    Custom base view for authentication endpoints.
+    Provides shared functionality for login and registration views.
+    """
     permission_classes = [AllowAny]
 
     def get_user_response(self, user):
+        """
+        Custom method for generating user response with token.
+        Creates or retrieves a DRF token and builds a standardized response
+        containing token, user data, and user ID. Used to ensure consistent
+        authentication responses for both login and registration endpoints.
+        """
         token, _ = Token.objects.get_or_create(user=user)
         return {
             'token': token.key,
@@ -37,6 +47,12 @@ class AuthBaseView(APIView):
 
 
 class RegistrationView(AuthBaseView):
+    """
+    Registration endpoint with custom error handling.
+    Inherits custom get_user_response() to provide standardized token-based
+    responses after successful registration.
+    """
+
     def post(self, request):
         serializer = RegistrationSerializer(data=request.data)
         if serializer.is_valid():
@@ -46,6 +62,12 @@ class RegistrationView(AuthBaseView):
 
 
 class LoginView(AuthBaseView):
+    """
+    Login endpoint with email-based authentication.
+    Inherits custom get_user_response() to provide standardized token-based
+    responses after successful authentication.
+    """
+
     def post(self, request):
         serializer = AuthTokenSerializer(
             data=request.data, context={'request': request})

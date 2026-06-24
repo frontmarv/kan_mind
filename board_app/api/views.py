@@ -9,9 +9,20 @@ from ..models import Board
 
 
 class BoardListView(APIView):
+    """
+    Custom board list view with permission-based filtering.
+    Overrides standard listing to only show boards where the user is either the owner
+    or a member. This is implemented manually in the GET handler instead of using
+    DRF Permission classes.
+    """
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
+        """
+        Returns only boards where the user is the owner or a member.
+        Performs custom filtering instead of Django ORM filtering to support
+        complex permission logic (owner OR member).
+        """
         boards = Board.objects.all()
         boardsWithPermissions = []
         for board in boards:
@@ -33,6 +44,15 @@ class BoardListView(APIView):
 @api_view(['GET', 'PATCH', 'DELETE'])
 @permission_classes([IsAuthenticated])
 def board_single_view(request, pk):
+    """
+    Custom single board view with granular permission control.
+    Implements the following custom permission logic:
+    - GET: Only if user is owner or member
+    - PATCH: Only if user is owner or member
+    - DELETE: Only if user is owner (not just member)
+    This granular control is implemented manually instead of using Permission classes
+    to allow different rules per HTTP method.
+    """
     board = get_object_or_404(Board, pk=pk)
     is_owner = request.user == board.owner
     is_member = request.user in board.members.all()
