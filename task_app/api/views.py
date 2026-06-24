@@ -85,8 +85,6 @@ def task_single_view(request, pk):
         return Response(status=status.HTTP_403_FORBIDDEN)
 
     if request.method == 'PATCH':
-        # Updates task and returns only the modified fields.
-        # Constructs response to include only fields that were in the request.
         serializer = TaskChangeSerializer(
             task, data=request.data, partial=True, context={'request': request})
         if serializer.is_valid():
@@ -103,11 +101,8 @@ def task_single_view(request, pk):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     elif request.method == 'DELETE':
-        # Deletes the task and returns its data before deletion.
-        serializer = TaskChangeSerializer(task)
-        data = serializer.data
         task.delete()
-        return Response(data, status=status.HTTP_204_NO_CONTENT)
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
 
 @api_view(['GET', 'POST'])

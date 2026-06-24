@@ -75,8 +75,6 @@ def board_single_view(request, pk):
 
     if request.method == 'DELETE':
         if is_owner:
-            serializer = BoardSingleViewSerializer(board)
-            data = serializer.data
             board.delete()
-            return Response(data, status=status.HTTP_204_NO_CONTENT)
+            return Response(status=status.HTTP_204_NO_CONTENT)
         return Response(status=status.HTTP_403_FORBIDDEN)
