@@ -70,6 +70,7 @@ htmlcov/
 */migrations/0*.py
 */migrations/__pycache__/
 **/migrations/
+!**/migrations/__init__.py
 
 # Node (if using npm for frontend)
 node_modules/
